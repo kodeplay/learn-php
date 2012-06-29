@@ -194,7 +194,7 @@ Inheritance
 -----------
 
 Introduction
-^^^^^^^^^^^^^
+~~~~~~~~~~~~
 
 Inheritance is the mechanism of deriving a new class from an existing class.
 Or we can say a new human being born from from an existing human being.
@@ -238,7 +238,7 @@ customer can also have its own properties for e.g. `getCustomerId()` method in C
 class.
 
 Access Specifiers - private, protected, public
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Lets say you have a house (or imagine or your parents). Now whole house is not accessiable
 to all the people of the world. If a courierman comes to your home he is allowed to see 
@@ -340,7 +340,8 @@ raises an error as $name in the Person class has been declared as protected and 
 
 
 Method Overridding
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
+
 Method overriding is when the function of base class is re-defined with the same name, 
 function signature and access specifier (either public or protected) of the derived class.
 
@@ -388,7 +389,8 @@ both these classes have provided a new functionality for the fly() method.
 
 
 Invoking parent methods
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
+
 When you override a method of the base class, it’s functionality is completely hidden 
 unless it has been explicitly invoked from the child class. To invoke a parent class 
 method you should use the keyword parent followed by the scope resolution operator 
