@@ -5,11 +5,11 @@ Buzz words, err.. Features!
 Encapsulation
 -------------
 
-In simple terms, encapsulation is data hiding. In our previous
-example, we created a new pizza object and set some properties which
-basically represent the data about the pizza. But there may be a need
-that some data should be ``private`` and should not be changeable from
-outside. 
+In simple terms, encapsulation is data hiding or precisely hiding of
+state details. In our previous example, we created a new pizza object
+and set some properties which basically represent the data about the
+pizza. But there may be a need that some data should be ``private``
+and should not be changeable from outside.
 
 The ultimate truth about building softwares is that requirements
 change all the time. Lets suppose we need to make the price of the
@@ -41,10 +41,9 @@ facilitate this.
 
     // Now let's create a pizza instance
 
-    $pizza1 = new Pizza();
+    $pizza1 = new Pizza(array('mushroom', 'capsicum', 'peppers'),
+                        'Medium');
     $pizza1->name = 'Mushroom Capsicum Pepper Pizza1';
-    $pizza1->size = 'Medium';
-    $pizza1->toppings = array('mushroom', 'capsicum', 'peppers');
 
     echo $pizza1->price; // 100 + 3 * 12 = 136
 
@@ -101,10 +100,9 @@ access modifier. Let's rewrite our class
         }
     }
 
-    $pizza1 = new Pizza();
+    $pizza1 = new Pizza(array('mushroom', 'capsicum', 'peppers'),
+                        'Medium');
     $pizza1->name = 'Mushroom Capsicum Pepper Pizza1';
-    $pizza1->size = 'Medium';
-    $pizza1->toppings = array('mushroom', 'capsicum', 'peppers');
 
     echo $pizza1->get_price(); // 100 + 3 * 12 = 136
 
@@ -116,8 +114,8 @@ So the problem is fixed. Well, this one is but there is another problem
 waiting for us.
 
 
-Getter and Setter Functions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+State is aweful
+~~~~~~~~~~~~~~~
 
 Could you find the problem in the above code? Let's see what the problem is.
 
@@ -127,10 +125,9 @@ Consider we wrote code as such
 
     <?php
 
-    $pizza1 = new Pizza();
+    $pizza1 = new Pizza(array('mushroom', 'capsicum', 'peppers'),
+                        'Medium');
     $pizza1->name = 'Mushroom Capsicum Pepper Pizza1';
-    $pizza1->size = 'Medium';
-    $pizza1->toppings = array('mushroom', 'capsicum', 'peppers');
 
     echo $pizza1->get_price(); // 100 + 3 * 12 = 136
 
@@ -168,26 +165,20 @@ by asking our object to do the price calculations for us on demand
         }
     }
 
-    $pizza1 = new Pizza();
+    $pizza1 = new Pizza(array('mushroom', 'capsicum', 'peppers'),
+                        'Medium');
     $pizza1->name = 'Mushroom Capsicum Pepper Pizza1';
-    $pizza1->size = 'Medium';
-    $pizza1->toppings = array('mushroom', 'capsicum', 'peppers');
 
     echo $pizza1->get_price(); // 100 + 3 * 12 = 136
 
     echo $pizza1->get_price(); // 100 + 3 * 20 = 160
 
 
-Now the business is good!
+Now we are doing business!
 
 .. note:: 
 
-   Always do calculations on latest state. Because state _is_ bad.
-
-
-Abstraction
------------
-TODO
+   Always do calculations on latest state. Because state _is_ aweful.
 
 
 Inheritance
