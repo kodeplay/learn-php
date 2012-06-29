@@ -27,6 +27,7 @@ Object Oriented Programming
    :maxdepth: 2
 
    oop/intro
+   oop/basics
    oop/features
 
 
