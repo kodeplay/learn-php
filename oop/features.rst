@@ -427,6 +427,80 @@ program executes the showData() method if the Customer class is called which int
 the showData() function of the parent class. After the parent class’s showData() function 
 complets its execution the remaining code in showData() function of the Customer class is 
 executed.
+
+
+Abstraction
+-----------
+
+Abstraction facilitates providing a description to a some behaviour or concept or an
+object in your code. In our previous pizza example, we have already seen abstraction.
+Let us see if we can point it out by going through the code again.
+
+.. sourcecode:: php
+
+    <?php
+
+    class Pizza {
+
+        // name, size, toppings remain public
+
+        private $price;
+
+        public function __construct($toppings, $size) {
+            $this->toppings = $toppings;
+            $this->size = $size;
+        }
+
+        public function get_price() {
+            if ($this->size === 'regular') $sf = 8;
+            if ($this->size === 'medium') $sf = 12;
+            if ($this->size === 'large') $sf = 20;
+            return 100 + $sf * count($this->toppings);
+        }
+    }
+
+In the above example, get_price is an abstraction. What if our
+language did not allow us to write a method like get_price? In that
+case we would still be able to solve the problem. How ? We could get
+along by doing the price calculations everytime we need to find the
+price.
+
+.. sourcecode:: php
+
+    <?php
+
+    $pizza1 = new Pizza(array('mushroom', 'capsicum', 'peppers'),
+                        'Medium');
+    $pizza1->name = 'Mushroom Capsicum Pepper Pizza1';
+
+    if ($pizza1->size === 'regular') $sf = 8;
+    if ($pizza1->size === 'medium') $sf = 12;
+    if ($pizza1->size === 'large') $sf = 20;
+    echo 'Price of ' . $pizza1->name . 'is ' . 100 + $sf * count($pizza1->toppings);
+
+This is both inconvenient and inelegant because not only it means
+duplicate code. We would be able to compute the price but our 
+class now lacks the ability to express or describe the concept
+of computing price from toppings and size. When an end user (someone using 
+or reading your code) has a description of get_price then he/she doesn't 
+need to know about the specifics of how the price is calculated. Tomorrow the 
+price calculation formula might be different but the end user can still
+safely expect that ``get_price`` will return a valid price.
+
+Similarly, when we say ``class Pizza extends FoodItem``, FoodItem is a 
+useful abstraction because it right away gives some meaning or description
+to Pizza, even before we define a Pizza class. 
+
+.. note:: 
+
+   If you were thinking that abstraction is data hiding then you were
+   plain wrong. This statement misguides and is no. 1 reason for all
+   confusion about abstraction. 
+
+   On the other hand, if you like the above definition of abstraction,
+   then I would strongly recommend you the book Structure & Interpretation
+   of computer programs or SICP.
+
     
 Polymorphism
 ------------
