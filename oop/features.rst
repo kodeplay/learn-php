@@ -516,6 +516,239 @@ to Pizza, even before we define a Pizza class.
     
 Polymorphism
 ------------
-TODO
 
+Polymorphism is a feature of OOP in which classes are allowed to have
+different implementation but with the same interface.
+
+Let us get hands on and build upon our Pizza example to write 
+a program for a Pizzeria for printing their menu or catalog.
+
+Our Pizzeria sells Garlic Breads, Pasta and beverages too along with
+Pizzas. We need to write a program that will print a menu card 
+consisting of all these items. But before that we need to understand
+what are interfaces. 
+
+.. sourcecode:: php
+
+    <?php
+
+    interface FoodMenuItem {
+        public function get_name();
+        public function is_veg_or_nonveg();
+        public function get_price();
+        public function get_ingredients();
+    }
+
+Interface is nothing but a contract. The above interface defines and
+four methods but without any implementation. We are already familiar
+with the ``is_veg_or_nonveg`` and ``get_price`` methods from the Pizza
+class.  The other methods are ``get_name`` and
+``get_ingredients``. What does this mean?
+
+Let us go one step at a time - 
+
+* We are defining a contract for all objects that will be part of 
+  a food menu, Pizza is one such type (class) of object and there
+  can be other types too.
+
+* Foodmenu will be used by customers who visit the food joint to decide what 
+  to they want to eat. So the menu should tell them 4 things
+  - is the food item veg or nonveg
+  - the price of the food item
+  - it's name
+  - the ingredients
+    
+* So by specifying that a class implements foodmenu interface, we are making 
+  sure that that class will provide us with these 4 methods so that we 
+  can obtain all the information needed to put an object of that class
+  into our foodmenu.
+
+For a concrete example, lets us get back to our pizzeria example. Apart from 
+Pizzas, our pizzeria also sells other food items such as Garlic bread, Pasta
+and beverages and so the menu card should include these too. Let us define classes
+for these food items and bind them to have a contract with our interface.
+
+.. sourcecode:: php
+
+    <?php
+
+    class Pizza implements FoodMenuItem {
+
+        // define name, size etc.
+
+        public static $TOPPING_SETS = array(
+            'veg' => array('tomato', 'capsicum', 'paneer', 'onions', 'olives'),
+            'nonveg' => array('chicken', 'mutton', 'beef', 'pork'),
+        );
+
+        public function get_name() {
+            return $this->name;
+        }
+
+        private $price;
+
+        public function __construct($toppings, $size) {
+            $this->toppings = $toppings;
+            $this->size = $size;
+        }
+
+        public function get_price() {
+            if ($this->size === 'regular') $sf = 8;
+            if ($this->size === 'medium') $sf = 12;
+            if ($this->size === 'large') $sf = 20;
+            return 100 + $sf * count($this->toppings);
+        } 
+
+        public function is_veg_or_nonveg() {
+            foreach ($this->toppings as $topping) {
+                if (in_array($topping, self::$TOPPING_SETS['non_veg'])) {
+                    return 'non_veg';
+                }
+            }
+            return 'veg';
+        }
+
+        public function get_ingredients() {
+            return array_merge($this->toppings, array('cheese'));
+        }
+    }
+
+    
+    class GarlicBread implements FoodMenuItem {
+        
+        public function get_name() {
+            return 'Garlic Bread'
+        }
+
+        public function get_price() {
+            return 100;
+        }
+
+        public function is_veg_or_nonveg() {
+            return 'veg';
+        }
+
+        public function get_ingredients() {
+            return array('bread', 'garlic', 'butter', 'cheese', 'pepper');
+        }
+    }
+
+
+    class Beverage implements FoodMenuItem {
+
+        public function __construct($name) {
+            $this->name = $name;
+        }
+
+        public function get_name() {
+            return $this->name;
+        }
+
+        public function get_price() {
+            return 30;
+        }
+
+        public function is_veg_or_nonveg() {
+            return 'veg';
+        }
+
+        public function get_ingredients() {
+            return array('caffiene', 'sugar', 'co2', 'pesticides');
+        }
+    }
+
+    
+    class Pasta implements FoodMenuItem {
+
+        public color;
+
+        public function get_name() {
+            return $this->color . ' Pasta';
+        }
+
+        public function get_price() {
+            return $this->is_veg_or_nonveg() === 'veg' ? 100 : 130;
+        }
+
+        public function is_veg_or_nonveg() {
+            foreach ($this->get_ingredients() as $ing) {
+                if (in_array($ing, Pizza::$TOPPING_SETS['non_veg'])) {
+                    return 'non_veg';
+                }
+            }
+            return 'veg';
+        }
+
+        public function get_ingredients() {
+            return array('cheese', 'pasta', 'olives', 'capsicum', 'onions');
+        }
+    }
+
+
+Whenever a class implements an interface, it must include all the methods 
+that the interface defines along with the same signature. Now let us write 
+a FoodMenu class that will also take care of telling the printer how to 
+print itself.
+
+.. sourcecode:: php
+
+    <?php 
+
+    class FoodMenu {
+
+        private $items;
+
+        public function add_item(FoodMenuItem $item) {
+            $this->items[] = $item;
+        }
+
+        public function to_print() {
+            $p = '<ul>';
+            for ($this->items as $item) {
+                $p .= '<li class="' . $item->is_veg_or_nonveg() . '">';
+                $p .= '    <h3>' . $item->get_name() . '</h3>'
+                $p .= '    <p>' . implode(', ', $item->get_ingredients()) . '</p>'
+                $p .= '    <p>' . $item->get_price() . '</p>'
+                $p .= '</li>';
+            }
+            $p .= '</ul>';
+            return $p;
+        }
+    }
+
+    $foodmenu = new FoodMenu();
+    
+    $pizza = new Pizza(array('toppings', 'here'), 'Large');
+    // create and initialize few more pizzas
+
+    $foodmenu->add_item($pizza);
+
+    $garlicbread = new Garlicbread();
+    // create and initialize garlic breads
+
+    $foodmenu->add_item($garlicbread);
+
+    $coke = new Beverage('coke');
+    $foodmenu->add_item($coke);
+    $pepsi = new Beverage('pepsi');
+    $foodmenu->add_item($pepsi);
+
+    $whitepasta = new Pasta();
+    $whitepasta->color = 'white';
+    $foodmenu->add_item($whitepasta);
+
+    $redpasta = new Pasta();
+    $redpasta->color = 'red';
+    $foodmenu->add_item($redpasta);
+
+    echo $foodmenu->to_print();
+
+
+When the to_print method is invoked, it is capable of printing 
+information about all menu items even though all these food 
+items are quite uncommon and different from each other. The only
+way this was possible was because of the contract that the interface
+makes. It's like the interface tells the class that "it's alright that
+you are unique or have your own identity but make sure that you know
+how to speak to a printer if you happen to get added to a foodmenu"
 
