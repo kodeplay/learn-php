@@ -68,9 +68,12 @@ Looks like we could hack the pizza!
    above implementation. Can you spot it without looking at the next section ?
 
 
-To fix this, we need to define the instance property price such that it 
-can only be changed from inside the class. For that we have the ``private``
-access modifier. Let's rewrite our class
+Did you notice that so far we have declared all members of a class as
+``public``? This essentially means that they can be both accessed and
+set from anywhere in the code. To fix our current problem, we need to
+a way to define the instance property price such that it can only be
+changed from inside the class. For that we have the ``private`` access
+modifier. Let's rewrite our class
 
 .. sourcecode:: php
 
@@ -188,13 +191,12 @@ Introduction
 ~~~~~~~~~~~~
 
 Inheritance is the mechanism of deriving a new class from an existing class.
-Or we can say a new human being born from from an existing human being.
-Lets say a baby is born to the women. That baby will have all the all or some features 
-of the women. She will have two hands, two legs, eyes and lots more.
+Just like we say a kid inherits features or skills of their parents, similarly
+inheritance in in context of OOP means a child class (also known as a sub class)
+inherits some or all properties and methods of it's parent class. 
 
-Now, lets see how it is done. No not how the baby is born (you are smart enough 
-to know that :) ). We will see how the classes are inherited in PHP. The classes are 
-inherited with the keyword `extends` . Look at the example below.
+Here is an example that illustrates parent-child relationship in 
+a class. 
 
 .. sourcecode:: php
 
@@ -223,19 +225,23 @@ inherited with the keyword `extends` . Look at the example below.
     }
 
 
-In the above example we have inherited class customer from person. Now the class customer 
-will have all the properties (variable and methods) of the class person. The class
-customer can also have its own properties for e.g. `getCustomerId()` method in Customer
-class.
+In the above example we have inherited class customer from person. We
+tell PHP to do this by using the keyword ``extends`` while defining
+the child class. Now the class customer will have all the properties
+(variable and methods) of the class person. The class customer can
+also have its own properties for e.g. `getCustomerId()` method in
+Customer class.
+
 
 Access Specifiers - private, protected, public
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Lets say you have a house (or imagine or your parents). Now whole house is not accessiable
-to all the people of the world. If a courierman comes to your home he is allowed to see 
-only the door of your home. A relative is allowed to enter inside the house but till the 
-drawing room and not in the bedroom or the cupboard of your bedroom. But your family 
-members are allowed to access all the properties of your house.
+Lets say you have a house. Now whole house is not accessible to all
+the people of the world. If a courierman comes to your home he is
+allowed to see only the door of your home. A relative is allowed to
+enter inside the house but till the drawing room and not in the
+bedroom or the cupboard of your bedroom. But your family members are
+allowed to access all the properties of your house.
 
 Now let us take it into programming world.
 
@@ -245,18 +251,19 @@ Private
 .. sourcecode:: php
 
     <?php
-        class Customer {
-	        private $name;
-	        public $age;
+
+    class Customer {
+        private $name;
+        public $age;
          
-	        public function __construct($name, $age) {
-		        $this->name = $name;
-		        $this->age = $age;
-	        }
+        public function __construct($name, $age) {
+	    $this->name = $name;
+	    $this->age = $age;
         }
+    }
          
-        $c = new Customer("Jimit","28");
-        echo "Name : " . $c->name; //causes an error 
+    $c = new Customer("Jimit","28");
+    echo "Name : " . $c->name; //causes an error 
        
         
 In the above example, the statement;
@@ -346,30 +353,30 @@ have its own style of flying and hence would need to override the flying functio
 
     <?php
 
-        class Bird {
-	        public function fly() {
-		        echo "Fly method of Bird Class called";
-	        }
+    class Bird {
+        public function fly() {
+            echo "Fly method of Bird Class called";
         }
-         
-        class Eagle extends Bird {
-	        public function fly() {
-		        echo "Fly method of the Eagle Class called";
-	        }
+    }
+    
+    class Eagle extends Bird {
+        public function fly() {
+             echo "Fly method of the Eagle Class called";
         }
-         
-        class Swift extends Bird {
-	        public function fly() {
-		        echo "Fly method of the Swift Class called";
-	        }
+    }
+
+    class Swift extends Bird {
+        public function fly() {
+            echo "Fly method of the Swift Class called";
         }
-         
-        $e = new Eagle();
-        $s = new Swift();
-         
-        $e->fly();
-        echo "\n";
-        $s->fly();
+    }
+
+    $e = new Eagle();
+    $s = new Swift();
+
+    $e->fly();
+    echo "\n";
+    $s->fly();
 
 
 In the above example, we create two objects of class Eagle and Swift. 
@@ -394,32 +401,34 @@ Look at the example below:
 .. sourcecode:: php
 
     <?php    
-        class Person {
-            
-            public function calculateData() {
-                echo "Data calculated in Person Class \n";
-            }
-        
-	        public function showData() {
-		        echo "This is Person's showData()\n";
-	        }
-        }
-         
-        class Customer extends Person{
 
-            public function calculateData() {
-                echo "Data calculated in Customer Class \n";
-            }
-        
-	        public function showData() {
-		        parent::showData();
-		        echo "This is Customer's showData()\n";
-	        }
+    class Person {
+            
+        public function calculateData() {
+            echo "Data calculated in Person Class \n";
+        } 
+            
+        public function showData() {
+            echo "This is Person's showData()\n";
         }
-         
-        $c = new Customer();
-        $c->showData();
-        $c->calculateData();
+    }
+
+    class Customer extends Person{
+    
+        public function calculateData() {
+            echo "Data calculated in Customer Class \n";
+        }
+        
+        public function showData() {
+            parent::showData();
+            echo "This is Customer's showData()\n";
+        }
+    }
+    
+    $c = new Customer();
+    $c->showData();
+    $c->calculateData();
+
     
 In the above example, look at the way in which the showData() function in the Customer 
 child class is invoking the the Person parent class’s showData() function. When the 
@@ -495,11 +504,14 @@ to Pizza, even before we define a Pizza class.
 
    If you were thinking that abstraction is data hiding then you were
    plain wrong. This statement misguides and is no. 1 reason for all
-   confusion about abstraction. 
+   confusion about abstraction. More than data, it aims at hiding 
+   the implementation.
 
-   On the other hand, if you like the above definition of abstraction,
-   then I would strongly recommend you the book Structure & Interpretation
-   of computer programs or SICP.
+   The definition of abstraction discussed above is taken from the
+   book Structure & Interpretation of computer programs or SICP. If
+   you like the above definition of abstraction, then this book
+   is strongly recommended to you although it's about Functional
+   Programming, another approach to building programs.
 
     
 Polymorphism
